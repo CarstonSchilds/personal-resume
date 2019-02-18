@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: gitlab.cs:4567/resume
+  repository: gitlab.cs:4567/personal/resume
   tag: latest
   pullPolicy: Always
   pullSecret: ''
