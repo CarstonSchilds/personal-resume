@@ -4,6 +4,7 @@ image:
   repository: gitlab.cs:4567/resume
   tag: latest
   pullPolicy: Always
+  pullSecret: ''
 
 service:
   type: ClusterIP
