@@ -1,3 +1,5 @@
+image:
+  pullSecret: gitlab-cs
 ingress:
   enabled: true
   hosts:
