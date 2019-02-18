@@ -31,7 +31,7 @@ deploy-qa:
   tags:
   - deploy
   script:
-  - /usr/bin/helm upgrade resume-qa --install --namespace resume-qa --values env/qa/values.yaml
+  - /usr/bin/helm upgrade resume-qa ./chart --install --namespace resume-qa --values env/qa/values.yaml
   only:
   - release/qa
   
@@ -43,6 +43,6 @@ deploy:
   tags:
   - deploy
   script:
-  - /usr/bin/helm upgrade resume-prod --install --namespace resume-prod --values env/prod/values.yaml --set "image.tag=${CI_COMMIT_SHA}"
+  - /usr/bin/helm upgrade resume-prod ./chart --install --namespace resume-prod --values env/prod/values.yaml --set "image.tag=${CI_COMMIT_SHA}"
   only:
   - master
