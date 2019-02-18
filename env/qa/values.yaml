@@ -3,4 +3,4 @@ image:
 ingress:
   enabled: true
   hosts:
-  - resume.qa.cs
+  - qa.resume.cs
