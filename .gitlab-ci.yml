@@ -13,7 +13,7 @@ stages:
 
 build:
   stage: build
-  tags: 
+  tags:
   - build
   script:
   - docker login -u gitlab-ci-token -p ${CI_BUILD_TOKEN} ${CI_REGISTRY}
@@ -22,11 +22,11 @@ build:
   - docker tag "${CI_REGISTRY}/${CI_PROJECT_PATH}:${CI_COMMIT_SHA}" "${CI_REGISTRY}/${CI_PROJECT_PATH}:latest"
   - docker push "${CI_REGISTRY}/${CI_PROJECT_PATH}:${CI_COMMIT_SHA}"
   - docker push "${CI_REGISTRY}/${CI_PROJECT_PATH}:latest"
-  # only:
-  #   changes:
-  #   - Dockerfile
-  #   - src/*
-  #   - html/*
+  only:
+    changes:
+    - Dockerfile
+    - src/*
+    - html/*
 
 deploy-qa:
   stage: deploy
