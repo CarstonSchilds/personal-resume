@@ -19,9 +19,9 @@ spec:
         app: {{ template "chart.name" . }}
         release: {{ .Release.Name }}
     spec:
-      {{- if  .Values.web.image.pullSecret }}
+      {{- if  .Values.image.pullSecret }}
       imagePullSecrets:
-      - name: {{ .Values.web.image.pullSecret }}
+      - name: {{ .Values.image.pullSecret }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
