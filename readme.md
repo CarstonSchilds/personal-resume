@@ -1,0 +1,31 @@
+# resume
+
+**resume** is a continuous integration pipeline for my public facing resume
+
+## Components
+### HTML
+_html/resume.html_ contains the static html source code for my resume
+### NGINX
+_src/nginx.conf_ contains the NGINX configuration which presents the static html
+### Docker
+_Dockerfile_ specifies an NGINX docker image which is populated with the static html and NGINX configuration
+### Helm
+_chart_ contains a simple set of templates which are used when deploying the NGINX docker image to Kubernetes
+### env
+_env_ contains Helm value files for each deployment environment
+### CI
+_.gitlab-ci.yml_ specifies the continuous integration pipeline stages
+
+## External Dependencies
+### cs-hosts
+**cs-hosts** is a CI pipeline for configuring my internal DNS TLD _.cs_. The hostnames used by K8S Ingresses, specified in _env/${env}/values.yaml_ should be defined in that project.
+### AWS Route 53 DNS
+The production configuration of this project is available externally at resume.carstonschilds.ca, this DNS record is maintained in AWS Route 53.
+### External NGINX
+An NGINX deployment outside of K8S is used to load balance across the K8S Ingress nodes. This NGINX deployment is also configured to provide SSL/TLS for production.
+
+## To-Do
+1. Implement templating for _html/resume.html_ so that many personalized resumes can be produced from this source
+
+### Maintainers
+* Carston Schilds <carston.schilds@gmail.com>
