@@ -1,5 +1,5 @@
 image:
-  tag: 38f9a6e6c0189df57de5a256d4b6de1619dac39c
+  tag: d6b2cf888392f4e61233cacbee0bed49109ad077
   pullSecret: gitlab-cs
   
 ingress:

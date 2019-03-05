@@ -36,7 +36,7 @@ deploy-qa:
   tags:
   - deploy
   script:
-  - /usr/bin/helm upgrade resume-qa ./chart --install --namespace resume-qa --values env/qa/values.yaml
+  - /usr/bin/helm upgrade resume-qa ./chart --install --recreate-pods --namespace resume-qa --values env/qa/values.yaml
   only:
   - release/qa
   
