@@ -1,6 +1,6 @@
 image:
   tag: d6b2cf888392f4e61233cacbee0bed49109ad077
-  pullSecret: gitlab-cs
+  pullSecret: registry.cs
   
 ingress:
   enabled: true
