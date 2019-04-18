@@ -48,7 +48,7 @@ deploy-qa:
     name: alpine/helm:2.9.0
     entrypoint: [""]
   script:
-  - /usr/bin/helm upgrade resume-qa ./resume --install --recreate-pods --namespace resume-qa --values env/qa/values.yaml
+  - /usr/bin/helm upgrade resume-qa ./resume --install --recreate-pods --namespace resume --values env/qa/values.yaml
   only:
   - release/qa
   
@@ -58,6 +58,6 @@ deploy:
     name: alpine/helm:2.9.0
     entrypoint: [""]
   script:
-  - /usr/bin/helm upgrade resume-prod ./resume --install --namespace resume-prod --values env/prod/values.yaml
+  - /usr/bin/helm upgrade resume-prod ./resume --install --namespace resume --values env/prod/values.yaml
   only:
   - master
