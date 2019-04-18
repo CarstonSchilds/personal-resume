@@ -1,5 +1,5 @@
 image:
-  pullSecret: gitlab-cs
+  pullSecret: registry.cs
 ingress:
   enabled: true
   hosts:

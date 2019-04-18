@@ -5,7 +5,6 @@ variables: {}
 before_script:
 - mkdir -p ~/.kube
 - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
-- mkdir -p dist
 
 stages:
 - build
@@ -13,15 +12,30 @@ stages:
 
 build:
   stage: build
-  tags:
-  - build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  before_script:
+  - cat "$CI_SERVER_TLS_CA_FILE" >> /kaniko/ssl/certs/ca-certificates.crt
   script:
-  - docker login -u gitlab-ci-token -p ${CI_BUILD_TOKEN} ${CI_REGISTRY}
-  - docker pull "${CI_REGISTRY}/${CI_PROJECT_PATH}:latest" || true
-  - docker build --cache-from "${CI_REGISTRY}/${CI_PROJECT_PATH}:latest" --tag "${CI_REGISTRY}/${CI_PROJECT_PATH}:${CI_COMMIT_SHA}" .
-  - docker tag "${CI_REGISTRY}/${CI_PROJECT_PATH}:${CI_COMMIT_SHA}" "${CI_REGISTRY}/${CI_PROJECT_PATH}:latest"
-  - docker push "${CI_REGISTRY}/${CI_PROJECT_PATH}:${CI_COMMIT_SHA}"
-  - docker push "${CI_REGISTRY}/${CI_PROJECT_PATH}:latest"
+    - |
+        tee /kaniko/.docker/config.json <<EOF
+        {
+          "auths": {
+            "$CI_REGISTRY": {
+              "username":"$CI_REGISTRY_USER",
+              "password":"$CI_REGISTRY_PASSWORD"
+            }
+          }
+        }
+        EOF
+    - |
+        /kaniko/executor \
+          --context $CI_PROJECT_DIR \
+          --cache=true \
+          --dockerfile $CI_PROJECT_DIR/Dockerfile \
+          --destination $CI_REGISTRY_IMAGE:${CI_COMMIT_TAG} \
+          --destination $CI_REGISTRY_IMAGE:latest
   only:
     changes:
     - Dockerfile
@@ -33,10 +47,8 @@ deploy-qa:
   image:
     name: alpine/helm:2.9.0
     entrypoint: [""]
-  tags:
-  - deploy
   script:
-  - /usr/bin/helm upgrade resume-qa ./chart --install --recreate-pods --namespace resume-qa --values env/qa/values.yaml
+  - /usr/bin/helm upgrade resume-qa ./resume --install --recreate-pods --namespace resume --values env/qa/values.yaml
   only:
   - release/qa
   
@@ -45,9 +57,7 @@ deploy:
   image:
     name: alpine/helm:2.9.0
     entrypoint: [""]
-  tags:
-  - deploy
   script:
-  - /usr/bin/helm upgrade resume-prod ./chart --install --namespace resume-prod --values env/prod/values.yaml
+  - /usr/bin/helm upgrade resume-prod ./resume --install --namespace resume --values env/prod/values.yaml
   only:
   - master
