@@ -8,5 +8,10 @@ ingress:
     ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/ingress.class: nginx
     certmanager.k8s.io/cluster-issuer: letsencrypt
+    kubernetes.io/tls-acme: "true"
+  tls:
+    hosts:
+    - resume.carstonschilds.ca
+    secretName: tls-resume.carstonschilds.ca
   hosts:
   - resume.carstonschilds.ca
