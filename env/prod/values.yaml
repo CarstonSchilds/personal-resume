@@ -10,7 +10,7 @@ ingress:
     certmanager.k8s.io/cluster-issuer: letsencrypt
     kubernetes.io/tls-acme: "true"
   tls:
-    hosts:
+  - hosts:
     - resume.carstonschilds.ca
     secretName: tls-resume.carstonschilds.ca
   hosts:
