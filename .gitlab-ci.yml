@@ -39,11 +39,6 @@ build:
           --dockerfile ${CI_PROJECT_DIR}/Dockerfile \
           --destination ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} \
           --destination ${CI_REGISTRY_IMAGE}:latest
-  only:
-    changes:
-    - Dockerfile
-    - src/*
-    - html/*
   
 deploy:
   stage: deploy
@@ -51,7 +46,14 @@ deploy:
     name: alpine/helm:3.0.0-rc.1
     entrypoint: [""]
   script:
-  - /usr/bin/helm upgrade ${release} ./resume --install --namespace ${namespace} --values env/prod/values.yaml
+  - |
+      /usr/bin/helm upgrade ${release} \
+        ./resume --install \
+        --namespace ${namespace} \
+        --values env/prod/values.yaml \
+        --set image.tag=${CI_COMMIT_SHA} \
+        --set image.repository=${CI_REGISTRY_IMAGE}
+
   only:
   - master
 
@@ -61,6 +63,12 @@ deploy-qa:
     name: alpine/helm:3.0.0-rc.1
     entrypoint: [""]
   script:
-  - /usr/bin/helm upgrade ${release_qa} ./resume --install --namespace ${namespace} --values env/qa/values.yaml
+  - |
+      /usr/bin/helm upgrade ${release_qa} \
+        ./resume --install \
+        --namespace ${namespace} \
+        --values env/qa/values.yaml \
+        --set image.tag=${CI_COMMIT_SHA} \
+        --set image.repository=${CI_REGISTRY_IMAGE}
   only:
   - release/qa

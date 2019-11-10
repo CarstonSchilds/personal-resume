@@ -1,5 +1,6 @@
 image:
   pullSecret: registry.cs
+
 ingress:
   enabled: true
   hosts:
