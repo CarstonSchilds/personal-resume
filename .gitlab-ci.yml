@@ -1,10 +1,13 @@
 image: docker:latest
 
-variables: {}
+variables:
+  release: resume
+  release-qa: ${release}-qa
+  namespace: ${release}
 
 before_script:
 - mkdir -p ~/.kube
-- echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+- echo "${KUBE_CONFIG}" | base64 -d > ~/.kube/config
 
 stages:
 - build
@@ -16,26 +19,26 @@ build:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   before_script:
-  - cat "$CI_SERVER_TLS_CA_FILE" >> /kaniko/ssl/certs/ca-certificates.crt
+  - cat "${CI_SERVER_TLS_CA_FILE}" >> /kaniko/ssl/certs/ca-certificates.crt
   script:
     - |
         tee /kaniko/.docker/config.json <<EOF
         {
           "auths": {
-            "$CI_REGISTRY": {
-              "username":"$CI_REGISTRY_USER",
-              "password":"$CI_REGISTRY_PASSWORD"
+            "${CI_REGISTRY}": {
+              "username":"${CI_REGISTRY_USER}",
+              "password":"${CI_REGISTRY_PASSWORD}"
             }
           }
         }
         EOF
     - |
         /kaniko/executor \
-          --context $CI_PROJECT_DIR \
+          --context ${CI_PROJECT_DIR} \
           --cache=true \
-          --dockerfile $CI_PROJECT_DIR/Dockerfile \
-          --destination $CI_REGISTRY_IMAGE:${CI_COMMIT_TAG} \
-          --destination $CI_REGISTRY_IMAGE:latest
+          --dockerfile ${CI_PROJECT_DIR}/Dockerfile \
+          --destination ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} \
+          --destination ${CI_REGISTRY_IMAGE}:latest
   only:
     changes:
     - Dockerfile
@@ -48,7 +51,7 @@ deploy:
     name: alpine/helm:3.0.0-rc.1
     entrypoint: [""]
   script:
-  - /usr/bin/helm upgrade resume-prod ./resume --install --namespace resume --values env/prod/values.yaml
+  - /usr/bin/helm upgrade ${release} ./resume --install --namespace ${namespace} --values env/prod/values.yaml
   only:
   - master
 
@@ -58,6 +61,6 @@ deploy-qa:
     name: alpine/helm:3.0.0-rc.1
     entrypoint: [""]
   script:
-  - /usr/bin/helm upgrade resume-qa ./resume --install --recreate-pods --namespace resume --values env/qa/values.yaml
+  - /usr/bin/helm upgrade ${release-qa} ./resume --install --namespace ${namespace} --values env/qa/values.yaml
   only:
   - release/qa
