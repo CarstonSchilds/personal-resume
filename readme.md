@@ -24,8 +24,5 @@ The production configuration of this project is available externally at resume.c
 ### External NGINX
 An NGINX deployment outside of K8S is used to load balance across the K8S Ingress nodes. This NGINX deployment is also configured to provide SSL/TLS for production.
 
-## To-Do
-1. Implement templating for _html/resume.html_ so that many personalized resumes can be produced from this source
-
 ### Maintainers
 * Carston Schilds <carston.schilds@gmail.com>
