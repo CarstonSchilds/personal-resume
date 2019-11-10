@@ -41,23 +41,23 @@ build:
     - Dockerfile
     - src/*
     - html/*
-
-deploy-qa:
-  stage: deploy
-  image:
-    name: alpine/helm:2.9.0
-    entrypoint: [""]
-  script:
-  - /usr/bin/helm upgrade resume-qa ./resume --install --recreate-pods --namespace resume --values env/qa/values.yaml
-  only:
-  - release/qa
   
 deploy:
   stage: deploy
   image:
-    name: alpine/helm:2.9.0
+    name: alpine/helm:3.0.0-rc.1
     entrypoint: [""]
   script:
   - /usr/bin/helm upgrade resume-prod ./resume --install --namespace resume --values env/prod/values.yaml
   only:
   - master
+
+deploy-qa:
+  stage: deploy
+  image:
+    name: alpine/helm:3.0.0-rc.1
+    entrypoint: [""]
+  script:
+  - /usr/bin/helm upgrade resume-qa ./resume --install --recreate-pods --namespace resume --values env/qa/values.yaml
+  only:
+  - release/qa

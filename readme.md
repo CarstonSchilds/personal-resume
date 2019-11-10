@@ -1,6 +1,6 @@
 # resume
 
-**resume** is a continuous integration pipeline for my public facing resume
+**resume** is a continuous integration pipeline for my public facing resume available at resume.carstonschilds.ca
 
 ## Components
 ### HTML
@@ -21,9 +21,6 @@ _.gitlab-ci.yml_ specifies the continuous integration pipeline stages
 **cs-hosts** is a CI pipeline for configuring my internal DNS TLD _.cs_. The hostnames used by K8S Ingresses, specified in _env/${env}/values.yaml_ should be defined in that project.
 ### AWS Route 53 DNS
 The production configuration of this project is available externally at resume.carstonschilds.ca, this DNS record is maintained in AWS Route 53.
-
-## To-Do
-1. Implement templating for _html/resume.html_ so that many personalized resumes can be produced from this source
 
 ### Maintainers
 * Carston Schilds <carstonschilds@gmail.com>
