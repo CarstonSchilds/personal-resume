@@ -1,6 +1,6 @@
 # resume
 
-**resume** is a continuous integration pipeline for my public facing resume
+**resume** is a continuous integration pipeline for my public facing resume available at resume.carstonschilds.ca
 
 ## Components
 ### HTML
