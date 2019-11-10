@@ -2,7 +2,7 @@ image: docker:latest
 
 variables:
   release: resume
-  release-qa: ${release}-qa
+  release_qa: ${release}-qa
   namespace: ${release}
 
 before_script:
@@ -61,6 +61,6 @@ deploy-qa:
     name: alpine/helm:3.0.0-rc.1
     entrypoint: [""]
   script:
-  - /usr/bin/helm upgrade ${release-qa} ./resume --install --namespace ${namespace} --values env/qa/values.yaml
+  - /usr/bin/helm upgrade ${release_qa} ./resume --install --namespace ${namespace} --values env/qa/values.yaml
   only:
   - release/qa
