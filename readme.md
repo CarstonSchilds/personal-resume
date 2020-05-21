@@ -24,5 +24,14 @@ _.gitlab-ci.yml_ specifies the continuous integration pipeline stages
 ### AWS Route 53 DNS
 The production configuration of this project is available externally at resume.carstonschilds.ca, this DNS record is maintained in AWS Route 53.
 
+## Creating Distributable Copy
+* Navigate to resume.carstonschilds.ca in Chrome
+* Print the webpage
+* Choose _Save as PDF_
+* Change the margins to custom, 0.3" on all sides seems to work
+* Uncheck _Headers and footers_
+* Check _Background graphics_
+* Save
+
 ### Maintainers
 * Carston Schilds <carstonschilds@gmail.com>
