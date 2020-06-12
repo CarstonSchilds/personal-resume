@@ -8,11 +8,16 @@ variables:
 before_script:
 - mkdir -p ~/.kube
 - echo "${KUBE_CONFIG}" | base64 -d > ~/.kube/config
-- echo "$CI_SERVER_HOST"
 
 stages:
+- test
 - build
 - deploy
+
+test:
+  stage: test
+  script:
+  - echo "$CI_SERVER_HOST"
 
 build:
   stage: build
