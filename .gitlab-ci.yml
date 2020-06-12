@@ -17,7 +17,7 @@ stages:
 test:
   stage: test
   script:
-  - echo "$CI_SERVER_HOST"
+  - env
 
 build:
   stage: build
