@@ -1,4 +1,4 @@
-image: docker:latest
+image: alpine:latest
 
 variables:
   release: resume
@@ -39,6 +39,9 @@ build:
           --dockerfile ${CI_PROJECT_DIR}/Dockerfile \
           --destination ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} \
           --destination ${CI_REGISTRY_IMAGE}:latest
+  only:
+    variables:
+    - $CI_SERVER_HOST == "gitlab.cs"
   
 deploy:
   stage: deploy
@@ -54,7 +57,10 @@ deploy:
         --set image.tag=${CI_COMMIT_SHA} \
         --set image.repository=${CI_REGISTRY_IMAGE}
   only:
-  - master
+    refs:
+    - master
+    variables:
+    - $CI_SERVER_HOST == "gitlab.cs"
 
 deploy-qa:
   stage: deploy
@@ -70,4 +76,7 @@ deploy-qa:
         --set image.tag=${CI_COMMIT_SHA} \
         --set image.repository=${CI_REGISTRY_IMAGE}
   only:
-  - release/qa
+    refs:
+    - release/qa
+    variables:
+    - $CI_SERVER_HOST == "gitlab.cs"
