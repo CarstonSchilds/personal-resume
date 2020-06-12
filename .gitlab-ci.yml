@@ -8,6 +8,7 @@ variables:
 before_script:
 - mkdir -p ~/.kube
 - echo "${KUBE_CONFIG}" | base64 -d > ~/.kube/config
+- echo "$CI_SERVER_HOST"
 
 stages:
 - build
@@ -39,9 +40,6 @@ build:
           --dockerfile ${CI_PROJECT_DIR}/Dockerfile \
           --destination ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} \
           --destination ${CI_REGISTRY_IMAGE}:latest
-  only:
-    variables:
-    - $CI_SERVER_HOST == "gitlab.cs"
   
 deploy:
   stage: deploy
@@ -59,8 +57,6 @@ deploy:
   only:
     refs:
     - master
-    variables:
-    - $CI_SERVER_HOST == "gitlab.cs"
 
 deploy-qa:
   stage: deploy
@@ -78,5 +74,3 @@ deploy-qa:
   only:
     refs:
     - release/qa
-    variables:
-    - $CI_SERVER_HOST == "gitlab.cs"
